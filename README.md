@@ -42,8 +42,8 @@ _______________
 _______________
 
 Each executable script (FIG*.py) can be run independently.
-This code was implemented in Python 3.7. For each script, it is advised to first check dependencies. 
+This code was implemented in Python 3.9.9. For each script, it is advised to first check dependencies. 
 To ensure that potential errors are trackable, scripts should be executed more or less linewise (or 'chunkwise').
 
 _________________________
-E.A. Högner, 28/03/2023
+E.A. Högner, 29/03/2023
