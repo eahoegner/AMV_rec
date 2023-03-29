@@ -55,12 +55,12 @@ AMV_p = []
 AMV_pv = []
 
 p0, p1 = np.polyfit(time[bound : -bound], runstd(data, ws)[bound : -bound]**2, 1)
-pv = kendall_tau_test(data, tt_samples, ws, p0, "var", bound) #correct significance testing as in Ben-Yami et al 
+pv = kendall_tau_test(data, tt_samples, ws, p0, "var", bound)
 AMV_p.append(p0)
 AMV_pv.append(pv)
 
 p0, p1 = np.polyfit(time[bound : -bound], runac(data, ws)[bound : -bound], 1)
-pv = kendall_tau_test(data, tt_samples, ws, p0, "ar", bound) #correct significance testing as in Ben-Yami et al 
+pv = kendall_tau_test(data, tt_samples, ws, p0, "ar", bound)
 AMV_p.append(p0)
 AMV_pv.append(pv)
 
@@ -88,15 +88,14 @@ for column in standardised_PLN.columns[]:
     
     # extract variance slope and p-value
     PLN_var.append(p0)
-    pv = kendall_tau_test(data, tt_samples, ws, p0, "var", bound) #correct significance testing as in Ben-Yami et al 
-    PLN_var_pv.append(pv)
+    pv = kendall_tau_test(data, tt_samples, ws, p0, "var", bound)
     
     # compute running AR1
     p0, p1 = np.polyfit(time[bound : -bound], runac(data, ws)[bound : -bound], 1)
     
     # extract AR1 slope and p-value
     PLN_ac.append(p0)
-    pv = kendall_tau_test(data, tt_samples, ws, p0, "ar", bound) #correct significance testing as in Ben-Yami et al 
+    pv = kendall_tau_test(data, tt_samples, ws, p0, "ar", bound) 
     PLN_ac_pv.append(pv)
 
 PLN = pd.DataFrame(list(zip(PLN_var, PLN_var_pv, PLN_ac, PLN_ac_pv)), columns =['var', 'var_pv', 'ac', 'ac_pv'])
@@ -124,7 +123,7 @@ for column in standardised_WN.columns[]:
     
     # extract variance slope and p-value
     WN_var.append(p0)
-    pv = kendall_tau_test(data, tt_samples, ws, p0, "var", bound) #correct significance testing as in Ben-Yami et al 
+    pv = kendall_tau_test(data, tt_samples, ws, p0, "var", bound)
     WN_var_pv.append(pv)
     
     # compute running AR1
@@ -132,7 +131,7 @@ for column in standardised_WN.columns[]:
     
     # extract AR1 slope and p-value
     WN_ac.append(p0)
-    pv = kendall_tau_test(data, tt_samples, ws, p0, "ar", bound) #correct significance testing as in Ben-Yami et al 
+    pv = kendall_tau_test(data, tt_samples, ws, p0, "ar", bound)
     WN_ac_pv.append(pv)
     
 WN = pd.DataFrame(list(zip(WN_var, WN_var_pv, WN_ac, WN_ac_pv)), columns =['var', 'var_pv', 'ac', 'ac_pv'])
