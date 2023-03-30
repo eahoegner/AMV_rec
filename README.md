@@ -13,9 +13,9 @@ _______________
 *  FIG4.py:				Python code to replicate Fig. 4 and Fig.s A3 and A4 of the manuscript, executable.
 *  FIG5.py:				Python code to replicate Fig. 5 of the manuscript, executable.
 *  FigA5-7.py:				Python code to replicate Fig.s A5-A7 of the manuscript, executable.
-*  EWS_functions_AMV.py:				Python code containing subroutines for the EWS analysis..
-*  recurrence.py:		Python code containing subroutines for the recurrence analysis.
-*  recurrence_quantification.py: Python code containing subroutines for the recurrence quantification analysis.
+*  EWS_functions_AMV.py:				Python code with subroutines for the EWS analysis.
+*  recurrence.py:		Python code with subroutines for the recurrence analysis.
+*  recurrence_quantification.py: Python code with subroutines for the recurrence quantification analysis.
 
 ## DATA
 ### INPUT data:
@@ -47,4 +47,4 @@ This code was implemented in Python 3.9.9. For each script, it is advised to fir
 To ensure that potential errors are trackable, scripts should be executed more or less linewise (or 'chunkwise').
 
 _________________________
-E.A. Högner, 29/03/2023
+E.A. Högner, 30/03/2023
