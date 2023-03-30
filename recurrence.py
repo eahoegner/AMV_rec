@@ -238,4 +238,3 @@ def normalize(x):
     Returns the Z-score series for x.
     """
     return (x - x.mean()) / x.std()
-
