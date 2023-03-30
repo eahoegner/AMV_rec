@@ -1,3 +1,5 @@
+# adapted from script provided in Nonlinear Data Analysis Concepts course taught by Norbert Marwan WS22/23, University of Potsdam
+
 """
 Import this script as a module 
 """
@@ -61,7 +63,7 @@ def diagonal_lines_hist(R, verb=True):
 
 
 def vertical_lines_hist(R, verb=True):
-    """returns the histogram P(l) of diagonal lines of length l."""
+    """returns the histogram P(l) of vertical lines of length l."""
     if verb:
         print("vertical lines histogram...")
     line_lengths = []
@@ -102,7 +104,6 @@ def _count_num_lines(arr):
 
 def rp_no_emb(x, e, norm="euclidean"):
     """Returns the recurrence plot of given time series."""
-    ''' no normalization '''
     d = pdist(np.array(x)[:, None], metric=norm)
     D = squareform(d)
     R = np.zeros(D.shape, dtype="int")
@@ -114,10 +115,9 @@ def rp_no_emb(x, e, norm="euclidean"):
     return R
 
 
-# function to compute the running determinism for window w
 
 def rundet(w, x, lm, RR):
-    
+    """ computes the running determinism for window w """
     n = x.shape[0]
     bounds = w // 2
     xs = np.zeros_like(x)
@@ -138,11 +138,8 @@ def rundet(w, x, lm, RR):
 
 
 
-
-# function to compute the running laminarity for window w
-
 def runlam(w, x, lm, RR):
-    
+""" computes the running laminarity for window w """
     n = x.shape[0]
     bounds = w // 2
     xs = np.zeros_like(x)
