@@ -3,17 +3,12 @@ Module for recurrence-based nonlinear time series analysis
 ==========================================================
 
 """
-
-# Created: Fri Aug 31, 2018  12:26am
-# Last modified: Fri Apr 19, 2019  10:27pm
-# Copyright: Bedartha Goswami <goswami@pik-potsdam.de>
+# adapted from Bedartha Goswami <goswami@pik-potsdam.de>
 
 import sys
 import numpy as np
 
 from scipy.spatial.distance import pdist, squareform
-
-# from . import utils
 
 # disable dive by zero warnings
 np.seterr(divide="ignore")
@@ -28,7 +23,6 @@ def mi(x, maxlag, binrule="fd", pbar_on=True):
     lags = np.arange(0, maxlag, dtype="int")
     mi = np.zeros(len(lags))
     # loop over lags and get MI
- #   pb = utils.progressbar_start(max_value=maxlag, pbar_on=pbar_on)
     for i, lag in enumerate(lags):
         # extract lagged data
         y1 = x[:n - lag].copy()
@@ -39,8 +33,6 @@ def mi(x, maxlag, binrule="fd", pbar_on=True):
         H12, _, _ = entropy2d(y1, y2, [be1, be2])
         # use the entropies to estimate MI
         mi[i] = H1 + H2 - H12
-#        utils.progressbar_update(pb, i)
-#    utils.progressbar_finish(pb)
 
     return mi, lags
 
@@ -85,22 +77,6 @@ def first_minimum(y):
     return fmin
 
 
-def acf(x, maxlag):
-    """
-    Returns the acuto-correlation function up to maximum lag.
-    """
-    # normalize data
-    n = len(x)
-    a = (x - x.mean()) / (x.std() * n)
-    b = (x - x.mean()) / x.std()
-
-    # get acf
-    cor = np.correlate(a, b, mode="full")
-    acf = cor[n:n+maxlag+1]
-    lags = np.arange(maxlag + 1)
-
-    return acf, lags
-
 
 def fnn(x, tau, maxdim, r=0.10, pbar_on=True):
     """
@@ -127,7 +103,6 @@ def fnn(x, tau, maxdim, r=0.10, pbar_on=True):
     d_m, k_m = mindist(x, 1, tau)
 
     # loop over dimensions and get FNN values
-#    pb = utils.progressbar_start(max_value=maxdim + 1, pbar_on=pbar_on)
     for m in dims:
         # get minimum distances for one dimension higher
         d_m1, k_m1 = mindist(x, m + 1, tau)
@@ -155,8 +130,6 @@ def fnn(x, tau, maxdim, r=0.10, pbar_on=True):
             fnn[m - 1] = 0
         # assign higher dimensional values to current one before next iteration
         d_m, k_m = d_m1, k_m1
-#        utils.progressbar_update(pb, m)
-#    utils.progressbar_finish(pb)
     fnn[0]=1
     return fnn, dims
 
@@ -228,7 +201,6 @@ def rp(x, m, tau, e, norm="euclidean", threshold_by="distance", normed=True):
 
 def rp_no_emb(x, e, norm="euclidean"):
     """Returns the recurrence plot of given time series."""
-    ''' no normalization '''
     d = pdist(np.array(x)[:, None], metric=norm)
     D = squareform(d)
     R = np.zeros(D.shape, dtype="int")
@@ -266,115 +238,4 @@ def normalize(x):
     Returns the Z-score series for x.
     """
     return (x - x.mean()) / x.std()
-
-
-def surrogates(x, ns, method, params=None, verbose=False):
-    """
-    Returns m random surrogates using the specified method.
-    """
-    nx = len(x)
-    xs = np.zeros((ns, nx))
-    if method == "iaaft":               # iAAFT
-        # as per the steps given in Lancaster et al., Phys. Rep (2018)
-        fft, ifft = np.fft.fft, np.fft.ifft
-        TOL = 1E-6
-        MSE_0 = 100
-        MSE_K = 1000
-        MAX_ITER = 10000
-        ii = np.arange(nx)
-        x_amp = np.abs(fft(x))
-        x_srt = np.sort(x)
-
-#        pb = utils.progressbar_start(max_value=ns, pbar_on=verbose)
-        for k in range(ns):
-            # 1) Generate random shuffle of the data
-            count = 0
-            ri = np.random.permutation(ii)
-            r_prev = x[ri]
-            MSE_prev = MSE_0
-            # while not np.all(rank_prev == rank_curr) and (count < MAX_ITER):
-            while (np.abs(MSE_K - MSE_prev) > TOL) * (count < MAX_ITER):
-                MSE_prev = MSE_K
-                # 2) FFT current iteration yk, and then invert it but while
-                # replacing the amplitudes with the original amplitudes but
-                # keeping the angles from the FFT-ed version of the random
-                phi_r_prev = np.angle(fft(r_prev))
-                r = ifft(x_amp * np.exp(phi_r_prev * 1j), nx)
-                # 3) rescale zk to the original distribution of x
-                # rank_prev = rank_curr
-                ind = np.argsort(r)
-                r[ind] = x_srt
-                MSE_K = (np.abs(x_amp - np.abs(fft(r)))).mean()
-                r_prev = r
-                # repeat until rank(z_k+1) = rank(z_k)
-                count += 1
-            if count >= MAX_ITER:
-                print("maximum number of iterations reached!")
-            xs[k] = np.real(r)
- #           utils.progressbar_update(pb, k)
- #       utils.progressbar_finish(pb)
-    elif method == "twins":              # twin surrogates
-        # 1. Estimate RP according to given parameters
-        R = rp(x, m=params["m"], tau=params["tau"], e=params["eps"],
-               norm=params["norm"], threshold_by=params["thr_by"])
-        # import matplotlib.pyplot as pl
-        # pl.imshow(R, origin="lower", cmap=pl.cm.gray_r, interpolation="none")
-        # pl.show()
-
-        # 2. Get embedded vectors
-        xe = embed(x, params["m"], params["tau"])
-        ne = len(xe)
-        assert ne == len(R), "Something is wrong!"
-
-        # 2. Identify twins
-        _printmsg("identify twins ...", verbose)
-        is_twin = []
-        twins = []
-        TOL = np.floor((params["tol"] * float(nx)) / 100.).astype("int")
- #       pb = utils.progressbar_start(max_value=ne, pbar_on=verbose)
-        R_ = R.T
-        for i in range(ne):
-            diff = R_ ==  R_[i]
-            j = np.sum(diff, axis=1) >= (ne - TOL)
-            j = np.where(j)[0].tolist()
-            j.remove(i)
-            if len(j) > 0:
-                is_twin.append(i)
-                twins.append(j)
-#            utils.progressbar_update(pb, i)
-#        utils.progressbar_finish(pb)
-
-        # 3. Generate surrogates
-#        _printmsg("generate surrogates ...", verbose)
-        all_idx = range(ne)
-        start_idx = np.random.choice(np.arange(ne), size=ns)
-        xs[:, 0] = xe[start_idx, 0]
- #       pb = utils.progressbar_start(max_value=ns, pbar_on=verbose)
-        for i in range(ns):
-            j = 1
-            k = start_idx[i]
-            while j < nx:
-                if k not in is_twin:
-                    k += 1
-                else:
-                    twins_k = twins[is_twin.index(k)]
-                    others = list(set(all_idx).difference(set(twins_k)))
-                    l = np.random.choice(others)
-                    k = np.random.choice(np.r_[l, twins_k])
-                if k >= ne:
-                    k = np.random.choice(np.arange(ne), size=1)
-                xs[i, j] = xe[k, 0]
-                j += 1
- #           utils.progressbar_update(pb, i)
- #       utils.progressbar_finish(pb)
-
-    elif method == "shuffle":               # simple random shuffling
-        k = np.arange(nx)
-        for i in range(ns):
-            j = np.random.permutation(k)
-            xs[i] = x[j]
-
-
-    return xs
-
 
