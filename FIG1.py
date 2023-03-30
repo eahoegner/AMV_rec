@@ -185,6 +185,7 @@ if pv >= .001:
 else:
     ax3.plot(time2, p0 * time2 + p1, color = 'b', ls = '--', label = '$p < 10^{-3}$')
 plt.legend(loc = 1)
+fig.align_ylabels()
 
 
 ''' DATA PREP '''
@@ -233,6 +234,7 @@ else:
     ax3.plot(time2, p0 * time2 + p1, color = 'b', ls = '--', label = '$p < 10^{-3}$')
 plt.legend(loc = 1)
 ax3.set_ylabel('AC1 (ws = %d yr)'%ws, color = 'b')
+fig.align_ylabels()
 
 
 fig.savefig('FigA1.pdf', bbox_inches = 'tight')
