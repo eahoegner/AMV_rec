@@ -213,7 +213,7 @@ fig.savefig('FigA6.pdf', bbox_inches = 'tight')
 
 
 ################################################################
-#---------FIG. A7 - Recurrence Plot AMV reconstruction---------#
+#---------------------FIG. A7 - RQA Proxies--------------------#
 ################################################################
 
 ''' DATA PREP '''
@@ -290,3 +290,57 @@ for i in np.arange(0,18):
 
 
 fig.savefig('FigA7.pdf', bbox_inches = 'tight')
+
+
+################################################################
+#---------------FIG. A8 - RQA slopes for proxies---------------#
+################################################################
+
+proxies_rec = proxies_rec.drop(['Year', 'Ocean2kHR.PacificMaiaNaNUrban2000'], axis=1)
+
+ws = 250
+lmin = 5
+RR = 0.3
+bound = ws // 2
+
+prox_D = []
+prox_L = []
+fig = plt.figure(figsize=(12,16))
+plt.subplots_adjust(wspace=0.25, hspace=0.2)
+
+for i in np.arange(0,18):
+    column = standardised_proxies.columns[i]
+    data = standardised_proxies[column].dropna()
+    L = len(data)
+    if L % 2 == 1:
+        data = data[1:]
+        L = L-1
+    time = np.arange(np.min(data), np.min(data) + L)
+    time2 = np.arange(time[0], time[-1])
+    runL = runlam(ws, data, lmin, RR)
+    runD = rundet(ws, data, lmin, RR)
+    p0, p1 = np.polyfit(time[bound : -bound], runD[bound : -bound], 1)
+    prox_D.append(p0)
+
+    p0, p1 = np.polyfit(time[bound : -bound], runL[bound : -bound], 1)
+    prox_L.append(p0)
+    
+    
+fig = plt.figure(figsize = (12,4))
+
+ax = fig.add_subplot(121)
+ax.hist(prox_D, color='m', bins=15, label="DET PLN")
+plt.axvline(x = 0, color='lightgrey', linestyle='dashed')
+plt.axvline(x = LSD[4], color='k', linestyle='dashed', label="DET AMV")
+plt.title("Distribution of linear change in DET for proxy records")
+plt.legend(loc=2)
+
+ax2 = fig.add_subplot(122)
+ax2.hist(prox_L, color='c', bins=15, label="LAM PLN")
+ax2.locator_params(axis='x', nbins=6)
+plt.axvline(x = 0, color='lightgrey', linestyle='dashed')
+plt.axvline(x = LSL[4], color='k', linestyle='dashed', label="LAM AMV")
+plt.title("Distribution of linear change in LAM for proxy records")
+plt.legend(loc=2)
+
+fig.savefig('FigA8.pdf', bbox_inches = 'tight')
