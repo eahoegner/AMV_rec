@@ -275,6 +275,9 @@ for i in np.arange(10,410,10):
 fig = plt.figure(figsize=(14,8))
 fig.subplots_adjust(wspace=0.25, hspace=0.3)
 
+time = np.arange(np.min(AMV[:,0]), np.min(AMV[:,0]) + len(AMV[:,0]))
+time2 = np.arange(time[0], time[-1])
+
 ax1 = plt.subplot(221)
 ax1.text(-.15, 1, s = 'a', transform=ax1.transAxes, fontsize=12, fontweight='bold', va='top', ha='right')
 ws = 50
@@ -303,6 +306,8 @@ ax.set_xlabel("Window size")
 ax.set_ylabel("Slope of fit")
 ax.set_title("Slope (variance)")
 
+time = np.arange(np.min(AMV[:,0]), np.min(AMV[:,0]) + len(AMV[:,0]))
+time2 = np.arange(time[0], time[-1])
 
 ax3 = plt.subplot(223)
 ax3.text(-.15, 1, s = 'c', transform=ax3.transAxes, fontsize=12, fontweight='bold', va='top', ha='right')
@@ -320,6 +325,7 @@ bound = ws // 2
 ax3.plot(time[bound : -bound], runac(data, ws)[bound : -bound], label = 'AC1 (ws = %d yr)'%ws)
 ax3.set_title("AMV reconstruction running AC1")
 plt.legend(loc = 4)
+ax3.set_xlim((time[0], time[-1]))
 ax3.set_ylabel('AC1')
 ax3.set_xlabel('Time [yr CE]')
 
