@@ -186,14 +186,14 @@ ax.plot(AMV_p[0], 0.1,
 
 ax = fig.add_subplot(425)
 ax.set_xlabel('Slope of lag-1 ac fit')
-ax.set_ylabel('Length of record')
+ax.set_ylabel('Length of record (years)')
 ax.plot(prox_ac, length, '.b', label = 'Proxies')
 ax.axvline(x=0, color='grey', linestyle='dashed')
 ax.text(-.15, 1, s = 'e', transform=ax.transAxes, fontsize=12, fontweight='bold', va='top', ha='right')
 
 ax = fig.add_subplot(426)
 ax.set_xlabel('Slope of variance fit')
-ax.set_ylabel('Length of record')
+ax.set_ylabel('Length of record (years)')
 ax.plot(prox_var, length, '.r', label = 'Proxies')
 ax.axvline(x=0, color='grey', linestyle='dashed')
 ax.text(-.15, 1, s = 'f', transform=ax.transAxes, fontsize=12, fontweight='bold', va='top', ha='right')
