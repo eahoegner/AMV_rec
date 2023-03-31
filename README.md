@@ -12,7 +12,7 @@ _______________
 *  FIG3.py:				Python code to replicate Fig. 3 of the manuscript, executable.
 *  FIG4.py:				Python code to replicate Fig. 4 and Fig.s A3 and A4 of the manuscript, executable.
 *  FIG5.py:				Python code to replicate Fig. 5 of the manuscript, executable.
-*  FigA5-7.py:				Python code to replicate Fig.s A5-A7 of the manuscript, executable.
+*  FigA5-7.py:				Python code to replicate Fig.s A5-A8 of the manuscript, executable.
 *  EWS_functions_AMV.py:				Python code with subroutines for the EWS analysis.
 *  recurrence.py:		Python code with subroutines for the recurrence analysis.
 *  recurrence_quantification.py: Python code with subroutines for the recurrence quantification analysis.
