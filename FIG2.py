@@ -213,4 +213,5 @@ ax.plot(AMV_p[0], AMV_pv[0],
         'v', markerfacecolor='w', markersize=10, markeredgewidth=1.5, markeredgecolor='lime', 
         label='AMV reconstruction')
 
+fig.align_ylabels()
 fig.savefig('FIG2.pdf', bbox_inches = 'tight')
