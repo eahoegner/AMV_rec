@@ -272,19 +272,61 @@ for i in np.arange(10,410,10):
 
 ''' PLOT '''
 
-fig = plt.figure(figsize=(14,4))
-fig.subplots_adjust(wspace=0.25)
+fig = plt.figure(figsize=(14,8))
+fig.subplots_adjust(wspace=0.25, hspace=0.25)
 
-ax = fig.add_subplot(121)
-ax.plot(np.arange(10,410,10), ac, 'ob')
-ax.set_xlabel("Window size")
-ax.set_ylabel("Slope of fit")
-ax.set_title("AMV reconstruction lag-1 autocorrelation")
+ax1 = plt.subplot(221)
+ws = 50
+bound = ws // 2
+ax1.plot(time[bound : -bound], runstd(data, ws)[bound : -bound]**2, label = 'Variance (ws = %d yr)'%ws)
+ws = 150
+bound = ws // 2
+ax1.plot(time[bound : -bound], runstd(data, ws)[bound : -bound]**2, label = 'Variance (ws = %d yr)'%ws)
+ws = 250
+bound = ws // 2
+ax1.plot(time[bound : -bound], runstd(data, ws)[bound : -bound]**2, label = 'Variance (ws = %d yr)'%ws)
+ws = 350
+bound = ws // 2
+ax1.plot(time[bound : -bound], runstd(data, ws)[bound : -bound]**2, label = 'Variance (ws = %d yr)'%ws)
+ax1.set_ylabel('Variance')
+ax1.set_xlabel('Time [yr CE]')
+plt.legend(loc = 1)
+ax1.set_xlim((time[0], time[-1]))
+ax1.set_title("AMV reconstruction running variance")
 
-ax = fig.add_subplot(122)
+
+ax = fig.add_subplot(222)
 ax.plot(np.arange(10,410,10), var, 'or')
 ax.set_xlabel("Window size")
 ax.set_ylabel("Slope of fit")
 ax.set_title("AMV reconstruction variance")
 
+
+ax3 = plt.subplot(223)
+ws = 50
+bound = ws // 2
+ax3.plot(time[bound : -bound], runac(data, ws)[bound : -bound], label = 'AC1 (ws = %d yr)'%ws)
+ws = 150
+bound = ws // 2
+ax3.plot(time[bound : -bound], runac(data, ws)[bound : -bound], label = 'AC1 (ws = %d yr)'%ws)
+ws = 250
+bound = ws // 2
+ax3.plot(time[bound : -bound], runac(data, ws)[bound : -bound], label = 'AC1 (ws = %d yr)'%ws)
+ws = 350
+bound = ws // 2
+ax3.plot(time[bound : -bound], runac(data, ws)[bound : -bound], label = 'AC1 (ws = %d yr)'%ws)
+ax3.set_title("AMV reconstruction running AC1")
+plt.legend(loc = 4)
+ax3.set_ylabel('AC1')
+ax3.set_xlabel('Time [yr CE]')
+
+
+ax = fig.add_subplot(224)
+ax.plot(np.arange(10,410,10), ac, 'ob')
+ax.set_xlabel("Window size")
+ax.set_ylabel("Slope of fit")
+ax.set_title("AMV reconstruction lag-1 autocorrelation")
+
+
+fig.align_ylabels()
 plt.savefig('FigA2.pdf', bbox_inches = 'tight')
