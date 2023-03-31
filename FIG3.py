@@ -216,4 +216,5 @@ ax.plot(AMV_p[0], AMV_pv[0],
         'v', markerfacecolor='w', markersize=10, markeredgewidth=1.5, markeredgecolor='lime', 
         label='Proxies')
 
+fig.align_ylabels()
 fig.savefig('FIG3.pdf', bbox_inches = 'tight')
