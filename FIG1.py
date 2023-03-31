@@ -273,9 +273,10 @@ for i in np.arange(10,410,10):
 ''' PLOT '''
 
 fig = plt.figure(figsize=(14,8))
-fig.subplots_adjust(wspace=0.25, hspace=0.25)
+fig.subplots_adjust(wspace=0.25, hspace=0.3)
 
 ax1 = plt.subplot(221)
+ax1.text(-.15, 1, s = 'a', transform=ax1.transAxes, fontsize=12, fontweight='bold', va='top', ha='right')
 ws = 50
 bound = ws // 2
 ax1.plot(time[bound : -bound], runstd(data, ws)[bound : -bound]**2, label = 'Variance (ws = %d yr)'%ws)
@@ -296,13 +297,15 @@ ax1.set_title("AMV reconstruction running variance")
 
 
 ax = fig.add_subplot(222)
+ax.text(-.2, 1, s = 'b', transform=ax.transAxes, fontsize=12, fontweight='bold', va='top', ha='right')
 ax.plot(np.arange(10,410,10), var, 'or')
 ax.set_xlabel("Window size")
 ax.set_ylabel("Slope of fit")
-ax.set_title("AMV reconstruction variance")
+ax.set_title("Slope (variance)")
 
 
 ax3 = plt.subplot(223)
+ax3.text(-.15, 1, s = 'c', transform=ax3.transAxes, fontsize=12, fontweight='bold', va='top', ha='right')
 ws = 50
 bound = ws // 2
 ax3.plot(time[bound : -bound], runac(data, ws)[bound : -bound], label = 'AC1 (ws = %d yr)'%ws)
@@ -322,10 +325,11 @@ ax3.set_xlabel('Time [yr CE]')
 
 
 ax = fig.add_subplot(224)
+ax.text(-.2, 1, s = 'd', transform=ax.transAxes, fontsize=12, fontweight='bold', va='top', ha='right')
 ax.plot(np.arange(10,410,10), ac, 'ob')
 ax.set_xlabel("Window size")
 ax.set_ylabel("Slope of fit")
-ax.set_title("AMV reconstruction lag-1 autocorrelation")
+ax.set_title("Slope (AC1)")
 
 
 fig.align_ylabels()
